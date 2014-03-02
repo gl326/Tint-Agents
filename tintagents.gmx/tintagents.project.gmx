@@ -13,6 +13,8 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\GamePadRefresh.gml</script>
+    <script>scripts\GetAnalogStick.gml</script>
+    <script>scripts\GetAButton.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\objBlock</object>
