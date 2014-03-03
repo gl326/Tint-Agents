@@ -38,6 +38,8 @@ jumpSpeed = 12;
 gravityStr = 1;
 accel = 6; //speed / accel is what ets added per frame
 
+angle = 0;
+
 my_blend = c_white;
 
 player = 0;
@@ -69,19 +71,33 @@ stun = 0;
             <string>//if keyboard_check(key_right){hspeed += horzSpeed/accel*sqr(1-stun);}  
 //if keyboard_check(key_left){hspeed -= horzSpeed/accel*sqr(1-stun);}  
 //if (!keyboard_check(key_left) and !keyboard_check(key_right)) or (stun&gt;0){hspeed += (0 - hspeed)*.2;}
-var analog = GetAnalogStick(0);
-var analogX = analog[0];
-if( analogX &gt; 0){
-    hspeed += horzSpeed/accel*sqr(1-stun);
+if gamepad_is_connected(player){
+var analog = GetAnalogStick(player);
+var analogX = analog[0], analogY = analog[1],
+    jump = GetAButtonPressed(player),jumping = GetAButton(player),
+    shoot = GetXButtonPressed(player);
+}else{
+var analogX = keyboard_check(key_right) - keyboard_check(key_left);
+var analogY = keyboard_check(key_down) - keyboard_check(key_up);
+var jump = keyboard_check_pressed(key_jump),jumping = keyboard_check(key_jump),
+    shoot = keyboard_check_pressed(key_shoot);
+}
+
+hspeed += horzSpeed/accel*sqr(1-stun)*analogX;
+/*if( analogX &gt; 0){
+    hspeed += horzSpeed/accel*sqr(1-stun)*analogX;
 } 
 if( analogX &lt; 0){
     hspeed -= horzSpeed/accel*sqr(1-stun);
-} 
+} */
 if( stun &gt; 0 or analogX == 0){
     hspeed += (0 - hspeed)*.2;
 }
 hspeed = max(-horzSpeed,min(horzSpeed,hspeed));
 
+angle += ((hspeed*2) - angle)*.8;
+
+if vspeed&gt;=0{ //standing or falling
 if place_meeting(x,y+1,objBlock){
 y = round(y-vspeed);
 while(!place_meeting(x,y+1,objBlock)){y+=1;}
@@ -96,6 +112,13 @@ grounded = false;
 gravity = gravityStr;
 }
 }
+}else{
+if place_meeting(x,y-1,objBlock){
+y = round(y-vspeed);
+while(!place_meeting(x,y-1,objBlock)){y-=1;}
+vspeed = 0;
+}
+}
 
 if place_meeting(x+sign(hspeed),y,objBlock){
 x = round(x-hspeed);
@@ -103,14 +126,14 @@ while(!place_meeting(x+sign(hspeed),y,objBlock)){x+=sign(hspeed);}
 hspeed = 0;
 }
 
-if grounded and GetAButton(0){ //keyboard_check_pressed(key_jump){
+if grounded and jump{ //keyboard_check_pressed(key_jump){
 vspeed = -jumpSpeed;
 gravity = gravityStr;
 grounded = false;
 }
 
-if !grounded and !GetAButton(0){ //!keyboard_check(key_jump){
-gravity = gravityStr*(2+(keyboard_check(key_down)));
+if !grounded and !jumping{ //!keyboard_check(key_jump){
+gravity = gravityStr*(2+(max(0,analogY)));
 }
 
 image_blend = merge_color(my_blend,image_blend,stun);
@@ -214,7 +237,7 @@ key_shoot = ord('X');
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_sprite_ext(sprite_index,image_index,x,y,image_xscale*(1+(abs(hspeed)/horzSpeed/2)),image_yscale*(1+(abs(vspeed)/15)),hspeed*2,image_blend,image_alpha);
+            <string>draw_sprite_ext(sprite_index,image_index,x,y,image_xscale*(1+(abs(hspeed)/horzSpeed/2)),image_yscale*(1+(abs(vspeed)/15)),angle,image_blend,image_alpha);
 </string>
           </argument>
         </arguments>
