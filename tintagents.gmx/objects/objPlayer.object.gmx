@@ -185,7 +185,13 @@ with(a){event_perform(ev_other,ev_user0);}
           <argument>
             <kind>1</kind>
             <string>if other.flying{
-//die
+if stun==0{
+stun = 1;
+if x&gt;other.x{hspeed = horzSpeed;}
+else{hspeed = -horzSpeed;}
+
+image_blend = c_black;
+}
 }
 else{
 arrows += 1;
