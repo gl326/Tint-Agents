@@ -21,6 +21,7 @@
     <script>scripts\GetXButtonPressed.gml</script>
     <script>scripts\GetAButton.gml</script>
     <script>scripts\GetXButton.gml</script>
+    <script>scripts\gotoRandomRoom.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\ftWinner</font>
@@ -32,12 +33,12 @@
     <object>objects\objSpawnpoint</object>
     <object>objects\objAmmospawn</object>
     <object>objects\objArrow</object>
-    <object>objects\objLeveleditor</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\initRoom</room>
-    <room>rooms\greg1</room>
+    <room>rooms\greg2</room>
     <room>rooms\test</room>
+    <room>rooms\greg1</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
