@@ -80,7 +80,7 @@
     <instance objName="objBlock" x="544" y="160" name="inst_828F1636" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objBlock" x="496" y="176" name="inst_03F16713" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objBlock" x="336" y="240" name="inst_A01B0913" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="objController" x="384" y="144" name="inst_7AF9507E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objAmmospawn" x="272" y="112" name="inst_443326D6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objBlock" x="0" y="0" name="inst_6BA17F14" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objBlock" x="0" y="16" name="inst_4D33A969" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objBlock" x="0" y="48" name="inst_2FD5F440" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -468,7 +468,6 @@
     <instance objName="objAmmospawn" x="592" y="144" name="inst_36E1CE27" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objAmmospawn" x="320" y="208" name="inst_A1E58AB2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objAmmospawn" x="272" y="352" name="inst_F63CF0CB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="objAmmospawn" x="272" y="112" name="inst_443326D6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

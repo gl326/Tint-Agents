@@ -28,6 +28,7 @@
             <string>pickup = 1;
 flying = 0;
 image_blend = c_black;
+player = 0;
 </string>
           </argument>
         </arguments>

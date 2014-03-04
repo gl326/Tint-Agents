@@ -4,14 +4,14 @@ index = argument0;
 if(gamepad_is_connected(index)){
     var xCoord = gamepad_axis_value(index, gp_axislh);
     var yCoord = gamepad_axis_value(index, gp_axislv);
-    if abs(xCoord)<.05{xCoord = 0;} // dead zone
-    if abs(yCoord)<.05{yCoord = 0;} // dead zone
+    if abs(xCoord)<.2{xCoord = 0;} // dead zone
+    if abs(yCoord)<.2{yCoord = 0;} // dead zone
     
     if(abs(yCoord)>.2 or abs(xCoord) >.2){
         yCoord = yCoord * -1;
-        //var unit = sqrt(yCoord*yCoord + xCoord * xCoord);
-        //yCoord = yCoord / unit;
-        //xCoord = xCoord / unit;
+        var unit = sqrt(yCoord*yCoord + xCoord * xCoord);
+        yCoord = yCoord / unit;
+        xCoord = xCoord / unit;
         val[0] = xCoord;
         val[1] = yCoord;
         return val

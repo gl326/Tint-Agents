@@ -32,9 +32,12 @@
     <object>objects\objSpawnpoint</object>
     <object>objects\objAmmospawn</object>
     <object>objects\objArrow</object>
+    <object>objects\objLeveleditor</object>
   </objects>
   <rooms name="rooms">
-    <room>rooms\room0</room>
+    <room>rooms\initRoom</room>
+    <room>rooms\greg1</room>
+    <room>rooms\test</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
