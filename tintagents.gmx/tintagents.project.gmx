@@ -22,6 +22,9 @@
     <script>scripts\GetAButton.gml</script>
     <script>scripts\GetXButton.gml</script>
   </scripts>
+  <fonts name="fonts">
+    <font>fonts\ftWinner</font>
+  </fonts>
   <objects name="objects">
     <object>objects\objBlock</object>
     <object>objects\objPlayer</object>

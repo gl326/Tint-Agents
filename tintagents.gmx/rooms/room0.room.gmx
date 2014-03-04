@@ -466,6 +466,9 @@
     <instance objName="objAmmospawn" x="512" y="400" name="inst_0A491E0D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objAmmospawn" x="48" y="448" name="inst_DAC4B335" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objAmmospawn" x="592" y="144" name="inst_36E1CE27" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objAmmospawn" x="320" y="208" name="inst_A1E58AB2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objAmmospawn" x="272" y="352" name="inst_F63CF0CB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objAmmospawn" x="272" y="112" name="inst_443326D6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>
