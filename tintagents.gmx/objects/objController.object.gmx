@@ -26,7 +26,6 @@
           <argument>
             <kind>1</kind>
             <string>var spawnlist = ds_list_create();
-
 with(objSpawnpoint){ds_list_add(spawnlist,id);}
 
 var p = 0,i,s,pp;
@@ -39,8 +38,28 @@ pp = instance_create(s.x,s.y,objPlayer);
 pp.player = p;
 p += 1;
 with(pp){event_perform(ev_other,ev_user0);}
-
 }
+ds_list_destroy(spawnlist);
+
+/////////////////////////////////////////////////////////////
+
+var how_many_arrows = 4;
+
+var spawnlist = ds_list_create();
+with(objAmmospawn){ds_list_add(spawnlist,id);}
+
+var p = 0,i,s,pp;
+repeat(how_many_arrows){
+i = floor(random(ds_list_size(spawnlist)));
+s = ds_list_find_value(spawnlist,i);
+ds_list_delete(spawnlist,i);
+
+pp = instance_create(s.x,s.y,objArrow);
+pp.pickup = 1;
+with(pp){event_perform(ev_other,ev_user0);}
+}
+ds_list_destroy(spawnlist);
+
 </string>
           </argument>
         </arguments>

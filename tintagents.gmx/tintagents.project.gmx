@@ -8,6 +8,9 @@
   <sprites name="sprites">
     <sprite>sprites\sprPlayer</sprite>
     <sprite>sprites\sprBlock</sprite>
+    <sprite>sprites\sprArrow</sprite>
+    <sprite>sprites\sPlayerspawn</sprite>
+    <sprite>sprites\sAmmospawn</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -17,12 +20,15 @@
     <script>scripts\GetAButtonPressed.gml</script>
     <script>scripts\GetXButtonPressed.gml</script>
     <script>scripts\GetAButton.gml</script>
+    <script>scripts\GetXButton.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\objBlock</object>
     <object>objects\objPlayer</object>
     <object>objects\objController</object>
     <object>objects\objSpawnpoint</object>
+    <object>objects\objAmmospawn</object>
+    <object>objects\objArrow</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
