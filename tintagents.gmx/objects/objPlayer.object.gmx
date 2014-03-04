@@ -295,8 +295,8 @@ key_right = ord('D');
 key_up = ord('W');
 key_down = ord('S');
 
-key_jump = ord('Z');
-key_shoot = ord('X');
+key_jump = vk_space;//ord('Z');
+key_shoot = ord('C');
 }
 </string>
           </argument>

@@ -28,8 +28,12 @@
             <string>randomize();
 frame = 0;
 
+roomArr[0] = test;
+roomArr[1] = greg1;
+roomArr[2] = joe1;
+
 //TODO: get eveyry room in a list, jump to random room
-room_goto_next();
+room_goto(roomArr[floor(random(array_length_1d(roomArr)))]);
 </string>
           </argument>
         </arguments>
