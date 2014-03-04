@@ -230,14 +230,23 @@ with(other){instance_destroy();}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>stun = 1;
-aiming = 0;
-
-if x&gt;other.x{hspeed = horzSpeed;}
-if x&lt;other.x{hspeed = -horzSpeed;}
-if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset) and other.arrows&gt;0{
+            <string>if x==other.x{
+if hspeed&gt;0{other.x += sign(hspeed);}
+else{other.x+=choose(1,-1);}
+}
+if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
+x -= hspeed; y-=vspeed;
+vspeed =-8;
+if other.arrows&gt;0 and arrows == 0{
     other.arrows -= 1;
     arrows += 1;
+    }
+}
+else{
+stun = 1;
+aiming = 0;
+if x&gt;other.x{hspeed = horzSpeed;}
+if x&lt;other.x{hspeed = -horzSpeed;}
 }
 
 image_blend = c_black;
