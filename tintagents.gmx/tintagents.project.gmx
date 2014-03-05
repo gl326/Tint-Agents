@@ -24,6 +24,7 @@
     <script>scripts\RandomRoomScript.gml</script>
     <script>scripts\InitializeRooms.gml</script>
     <script>scripts\PlayReplay.gml</script>
+    <script>scripts\PlayerDraw.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\ftWinner</font>

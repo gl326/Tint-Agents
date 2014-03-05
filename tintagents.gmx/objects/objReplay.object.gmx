@@ -33,7 +33,7 @@
 buffer = ds_list_create();
 
 stutter = 1; //how many frames to save. 1 = every frame, 2 = ever other, 3 = once every 3, etc
-length = (room_speed*3) / stutter; //how long the replay will be
+length = (room_speed*4) / stutter; //how long the replay will be
 
 recording = 1;
 replay_frame = 0;
@@ -261,6 +261,34 @@ else{
       </action>
     </event>
     <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///tint players
+if recording{
+surface_set_target(ds_list_find_value(buffer,length-2));
+with(objPlayer){
+PlayerDraw(c_black);
+}
+surface_reset_target();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
