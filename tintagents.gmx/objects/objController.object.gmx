@@ -28,8 +28,9 @@
             <string>randomize();
 frame = 0;
 
-restartTimer = room_speed*3;
+restartTimer = room_speed*1;
 restart = 0;
+replayed = 0;
 InitializeRooms();
 
 
@@ -63,8 +64,13 @@ RandomRoomScript(room);
 restart += 1;
 }
 
-if restart&gt;=restartTimer{
-RandomRoomScript(room);
+if restart&gt;=restartTimer and !replayed{
+    PlayReplay();
+    replayed = 1;
+}
+
+if replayed and (GetAButtonPressed(0) or GetAButtonPressed(1) or keyboard_check_pressed(vk_anykey)){
+    RandomRoomScript(room);
 }
 </string>
           </argument>
@@ -125,6 +131,7 @@ with(pp){event_perform(ev_other,ev_user0);}
 ds_list_destroy(spawnlist);
 
 restart = 0;
+replayed = 0;
 }
 </string>
           </argument>
