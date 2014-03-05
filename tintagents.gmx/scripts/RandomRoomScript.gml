@@ -6,5 +6,7 @@ while(chooseIndex == index or chooseIndex == titleScreen or chooseIndex == initR
     chooseIndex = global.roomArr[floor(random(array_length_1d(global.roomArr)))];
 }
 
+if debug_mode{show_message("jump!");}
+
 room_goto(chooseIndex);
 

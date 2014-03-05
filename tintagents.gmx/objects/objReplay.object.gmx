@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-999999</depth>
+  <depth>-99999</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,19 +25,113 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>randomize();
-frame = 0;
+            <string>//buffer_get_surface();
 
-restartTimer = room_speed*1;
-restart = 0;
-replayed = 0;
-InitializeRooms();
+//surf = surface_create(640,480);
+//surface_set_target(surf);
+
+buffer = ds_list_create();
+
+stutter = 1; //how many frames to save. 1 = every frame, 2 = ever other, 3 = once every 3, etc
+length = (room_speed*3) / stutter; //how long the replay will be
+
+recording = 1;
+replay_frame = 0;
+startFrame = length-1;
+
+frame_step = 0;
+rewind = 0;
+
+alarm[0] = length*stutter;
+
+repeat(length){
+ds_list_add(buffer,surface_create(640,480));
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>425</id>
+        <kind>4</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>PlayReplay();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if room!=initRoom and room!=titleScreen{
+
+if recording{
+frame_step += 1;
+if frame_step &gt;= stutter{
+frame_step = 0;
+    view_surface_id[0] = ds_list_find_value(buffer,0);
+    ds_list_add(buffer,ds_list_find_value(buffer,0));
+    ds_list_delete(buffer,0);
+    
+    startFrame = max(0,startFrame-1);
+}
+}
+if !recording{
+if rewind&lt;1{
+    rewind += (1/(room_speed));
+    replayFrame = max(startFrame,min(floor(power(1-rewind,1/1.5)*ds_list_size(buffer)),ds_list_size(buffer)-1));
+    }
+else{
+replayFrame += 1/stutter;
+if replayFrame &gt; ds_list_size(buffer)-1{replayFrame = ds_list_size(buffer)-1;}
+}
+}
 
 
-//TODO: get eveyry room in a list, jump to random room
-RandomRoomScript(room);
-//gotoRandomRoom();
-//room_goto_next();
+}
 </string>
           </argument>
         </arguments>
@@ -60,18 +154,40 @@ RandomRoomScript(room);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if instance_number(objPlayer)&lt;2{
-restart += 1;
+            <string>if !surface_exists(ds_list_find_value(buffer,0)){
+    ds_list_clear(buffer);
+    repeat(length){
+        ds_list_add(buffer,surface_create(640,480));
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/*
+for (var i=0; i&lt;ds_list_size(buffer); i+=1){
+surface_free(ds_list_find_value(buffer,i));
 }
 
-if restart&gt;=restartTimer and !replayed{
-    PlayReplay();
-    replayed = 1;
-}
-
-if replayed and (GetAButtonPressed(0) or GetAButtonPressed(1) or keyboard_check_pressed(vk_anykey)){
-    RandomRoomScript(room);
-}
+ds_list_clear(buffer);
 </string>
           </argument>
         </arguments>
@@ -94,44 +210,50 @@ if replayed and (GetAButtonPressed(0) or GetAButtonPressed(1) or keyboard_check_
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if room!=titleScreen{
-var spawnlist = ds_list_create();
-with(objSpawnpoint){ds_list_add(spawnlist,id);}
+            <string>view_enabled = true;
+view_visible[0] = true;
+view_wview[0] = room_width;
+view_hview[0] = room_height;
+//view_surface_id[0] = surf;
 
-var p = 0,i,s,pp;
-repeat(2){
-i = floor(random(ds_list_size(spawnlist)));
-s = ds_list_find_value(spawnlist,i);
-ds_list_delete(spawnlist,i);
-
-pp = instance_create(s.x,s.y,objPlayer);
-pp.player = p;
-p += 1;
-with(pp){event_perform(ev_other,ev_user0);}
+frame_step = 0;
+recording = 1;
+startFrame = length-1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if room!=initRoom and room!=titleScreen{
+if recording{
+if surface_exists(view_surface_id[0]){draw_surface(view_surface_id[0],0,0);}
 }
-ds_list_destroy(spawnlist);
-
-/////////////////////////////////////////////////////////////
-
-var how_many_arrows = 4;
-
-var spawnlist = ds_list_create();
-with(objAmmospawn){ds_list_add(spawnlist,id);}
-
-var p = 0,i,s,pp;
-repeat(how_many_arrows){
-i = floor(random(ds_list_size(spawnlist)));
-s = ds_list_find_value(spawnlist,i);
-ds_list_delete(spawnlist,i);
-
-pp = instance_create(s.x,s.y,objArrow);
-pp.pickup = 1;
-with(pp){event_perform(ev_other,ev_user0);}
+else{
+    if replayFrame&lt;length-1 and rewind&gt;=1{surface_save(ds_list_find_value(buffer,floor(replayFrame)),string(replayFrame)+".png");}
+    draw_surface(ds_list_find_value(buffer,floor(replayFrame)),0,0);
+    
+    if rewind&lt;1 and (current_time mod 500)&lt;250{
+        draw_set_color(c_red);
+        //draw_text(room_width/2,room_height/2,"let's watch#that again");
+    }
 }
-ds_list_destroy(spawnlist);
-
-restart = 0;
-replayed = 0;
 }
 </string>
           </argument>
@@ -155,90 +277,22 @@ replayed = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>frame = !frame;
-
-if (frame) {draw_set_color(c_aqua);}
-else{draw_set_color(c_yellow);}
-
-draw_set_font(ftWinner);
-draw_set_halign(fa_center); draw_set_valign(fa_middle);
-
-if instance_number(objPlayer)==0{
-draw_text(room_width/2,room_height/2,"EVERYONE#DIED");
+            <string>if room!=initRoom and room!=titleScreen{
+if !recording{
+if rewind&lt;1{
+    draw_surface(ds_list_find_value(buffer,min(floor(power(1-rewind,1/4)*ds_list_size(buffer)),ds_list_size(buffer)-1)),0,0);
+    //draw_text(32,32,string(min(floor(sqrt(1-rewind)*ds_list_size(buffer)),ds_list_size(buffer)-1)));
 }
 else{
-if instance_number(objPlayer)==1{
-var p;
-with(objPlayer){p = player;}
-if p{draw_text(room_width/2,room_height/2,"AGENT BLUE#WINS");}
-else{draw_text(room_width/2,room_height/2,"AGENT RED#WINS");}
+    //if replayFrame&lt;length-1{surface_save(ds_list_find_value(buffer,floor(replayFrame)),string(replayFrame)+".png");}
+    draw_surface(ds_list_find_value(buffer,floor(replayFrame)),0,0);
+    //draw_text(32,32,string(replayFrame));
 }
 }
+}
 </string>
           </argument>
         </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="115">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>window_set_fullscreen(!window_get_fullscreen());
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="82">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>RandomRoomScript(room);
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="9" enumb="27">
-      <action>
-        <libid>1</libid>
-        <id>332</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_end_game</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
   </events>
