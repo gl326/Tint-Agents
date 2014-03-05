@@ -44,7 +44,6 @@ my_blend = c_white;
 
 player = 0;
 grounded = false;
-dead = false;
 
 stun = 0;
 
@@ -54,30 +53,6 @@ facing = 0;
 aim_dir = 0;
 
 step = 0;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>//show_message("hi");
-gamepad_set_vibration(player,0,0)
 </string>
           </argument>
         </arguments>
@@ -100,25 +75,21 @@ gamepad_set_vibration(player,0,0)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var analog = false;
-var analogX = 0, analogY = 0,
-    jump = false,jumping = false,
-    shoot = false;
-if(!dead){
-    if gamepad_is_connected(player){
-        analog = GetAnalogStick(player);
-        analogX = analog[0]; analogY = analog[1];
-        jump = GetAButtonPressed(player);
-        jumping = GetAButton(player);
-        shoot = GetXButton(player);
-    }else{
-        analogX = keyboard_check(key_right) - keyboard_check(key_left);
-        analogY = keyboard_check(key_up) - keyboard_check(key_down);
-        jump = keyboard_check_pressed(key_jump);
-        jumping = keyboard_check(key_jump);
-        shoot = keyboard_check(key_shoot);
-    }
+            <string>//if keyboard_check(key_right){hspeed += horzSpeed/accel*sqr(1-stun);}  
+//if keyboard_check(key_left){hspeed -= horzSpeed/accel*sqr(1-stun);}  
+//if (!keyboard_check(key_left) and !keyboard_check(key_right)) or (stun&gt;0){hspeed += (0 - hspeed)*.2;}
+if gamepad_is_connected(player){
+var analog = GetAnalogStick(player);
+var analogX = analog[0], analogY = analog[1],
+    jump = GetAButtonPressed(player),jumping = GetAButton(player),
+    shoot = GetXButton(player);
+}else{
+var analogX = keyboard_check(key_right) - keyboard_check(key_left);
+var analogY = keyboard_check(key_up) - keyboard_check(key_down);
+var jump = keyboard_check_pressed(key_jump),jumping = keyboard_check(key_jump),
+    shoot = keyboard_check(key_shoot);
 }
+
 if !aiming{hspeed += horzSpeed/accel*sqr(1-stun)*analogX;}
 
 if( stun &gt; 0 or analogX == 0 or aiming){
@@ -140,7 +111,6 @@ while(!place_meeting(x,y+1,objBlock)){y+=1;}
 grounded = true;
 vspeed = 0;
 gravity = 0;
-
 if analogY&lt;-.8 and abs(hspeed)&lt;1{image_yscale += (.5-image_yscale)*.4;}
 else{image_yscale += (1-image_yscale)*.4;}
 }
@@ -224,13 +194,8 @@ with(a){event_perform(ev_other,ev_user0);}
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if other.flying and other.player!=player{//or check team instead player
-//instance_destroy();
-dead = true;
-image_blend = c_black;
-my_blend = image_blend;
-gamepad_set_vibration(player,.9,.9);
-alarm[0] = room_speed / 2;
+            <string>if other.flying and other.player!=player{
+instance_destroy();
 /*if stun==0{
 stun = 1;
 if x&gt;other.x{hspeed = horzSpeed;}
@@ -248,7 +213,7 @@ with(other){instance_destroy();}
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="objPlayer">
+    <event eventtype="4" ename="2">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -272,7 +237,6 @@ else{other.x+=choose(1,-1);}
 if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
 x -= hspeed; y-=vspeed;
 vspeed =-8;
-//boop
 if other.arrows&gt;0 and arrows == 0{
     other.arrows -= 1;
     arrows += 1;
@@ -314,18 +278,6 @@ if player{
 image_blend = c_yellow;
 my_blend = image_blend;
 
-key_left = ord('A');
-key_right = ord('D');
-key_up = ord('W');
-key_down = ord('S');
-
-key_jump = vk_space;//ord('Z');
-key_shoot = ord('C');
-}
-else{
-image_blend = c_aqua;
-my_blend = image_blend;
-
 key_left = vk_left;
 key_right = vk_right;
 key_up = vk_up;
@@ -333,7 +285,18 @@ key_down = vk_down;
 
 key_jump = vk_shift;
 key_shoot = vk_control;
+}
+else{
+image_blend = c_aqua;
+my_blend = image_blend;
 
+key_left = ord('A');
+key_right = ord('D');
+key_up = ord('W');
+key_down = ord('S');
+
+key_jump = vk_space;//ord('Z');
+key_shoot = ord('C');
 }
 </string>
           </argument>
