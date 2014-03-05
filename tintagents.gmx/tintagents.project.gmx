@@ -4,7 +4,21 @@
     <Config>Configs\Default</Config>
   </Configs>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\boop1</sound>
+    <sound>sound\boop2</sound>
+    <sound>sound\bump</sound>
+    <sound>sound\death1</sound>
+    <sound>sound\death2</sound>
+    <sound>sound\fire1</sound>
+    <sound>sound\fire2</sound>
+    <sound>sound\jump1</sound>
+    <sound>sound\jump2</sound>
+    <sound>sound\pickup1</sound>
+    <sound>sound\pickup2</sound>
+    <sound>sound\step1</sound>
+    <sound>sound\step2</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\sprPlayer</sprite>
     <sprite>sprites\sprBlock</sprite>

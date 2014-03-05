@@ -33,6 +33,14 @@ key_down = vk_down;
 key_jump = vk_shift;
 key_shoot = vk_control;
 
+//sounds
+boop = boop1;
+death = death1;
+fire = fire1;
+jump = jump1;
+pickup = pickup1;
+step = step1;
+
 horzSpeed = 8;
 jumpSpeed = 12;
 gravityStr = 1;
@@ -130,6 +138,10 @@ if( stun &gt; 0 or analogX == 0 or aiming){
 else{step += 1;}
 hspeed = max(-horzSpeed,min(horzSpeed,hspeed));
 
+if(grounded and hspeed != 0 and !audio_is_playing(step)){
+    //audio_play_sound(step, 20, false);
+}
+
 if analogX&lt;0{facing = true;}
 if analogX&gt;0{facing = false;}
 angle += ((hspeed*2) - angle)*.8;
@@ -167,10 +179,11 @@ hspeed = 0;
 }
 
 if grounded and jump{ //keyboard_check_pressed(key_jump){
-vspeed = -jumpSpeed;
-gravity = gravityStr;
-grounded = false;
-aiming = false;
+    vspeed = -jumpSpeed;
+    gravity = gravityStr;
+    grounded = false;
+    aiming = false;
+    audio_play_sound(jump, 10, false);
 }
 
 if !grounded and !jumping{ //!keyboard_check(key_jump){
@@ -186,22 +199,23 @@ if grounded and image_yscale&lt;.7 and aiming{aiming = 0;}
 
 ////////////////aiming and firing
 if arrows&gt;0{
-if shoot{
-if !aiming{if facing{aim_dir = 180;}else{aim_dir = 0;}}
-aiming = 1;
-if abs(analogX)&gt;0 or abs(analogY)&gt;0{aim_dir = arctan2(analogY, analogX)*180/pi;}
-}
-else{
-if aiming{
-aiming = 0;
-arrows -=1;
-var a = instance_create(x+lengthdir_x(8,aim_dir),y-16+lengthdir_y(16,aim_dir),objArrow);
-a.pickup = 0;
-a.direction = aim_dir;
-a.player = player;
-with(a){event_perform(ev_other,ev_user0);}
-}
-}
+    if shoot{
+        if !aiming{if facing{aim_dir = 180;}else{aim_dir = 0;}}
+        aiming = 1;
+        if abs(analogX)&gt;0 or abs(analogY)&gt;0{aim_dir = arctan2(analogY, analogX)*180/pi;}
+        }
+    else{
+        if aiming{
+            aiming = 0;
+            arrows -=1;
+            audio_play_sound(fire, 10, false);
+            var a = instance_create(x+lengthdir_x(8,aim_dir),y-16+lengthdir_y(16,aim_dir),objArrow);
+            a.pickup = 0;
+            a.direction = aim_dir;
+            a.player = player;
+            with(a){event_perform(ev_other,ev_user0);}
+        }
+    }
 }
 </string>
           </argument>
@@ -226,12 +240,12 @@ with(a){event_perform(ev_other,ev_user0);}
           <argument>
             <kind>1</kind>
             <string>if other.flying and other.player!=player{//or check team instead player
-//instance_destroy();
-dead = true;
-image_blend = c_black;
-my_blend = image_blend;
-gamepad_set_vibration(player,.9,.9);
-alarm[0] = room_speed / 2;
+    dead = true;
+    audio_play_sound(death, 10, false);
+    image_blend = c_black;
+    my_blend = image_blend;
+    gamepad_set_vibration(player,.9,.9);
+    alarm[0] = room_speed / 2;
 /*if stun==0{
 stun = 1;
 if x&gt;other.x{hspeed = horzSpeed;}
@@ -241,8 +255,9 @@ image_blend = c_black;
 }*/
 }
 else{
-arrows += 1;
-with(other){instance_destroy();}
+    arrows += 1;
+    audio_play_sound(pickup, 10, false);
+    with(other){instance_destroy();}
 }
 </string>
           </argument>
@@ -271,22 +286,27 @@ if hspeed&gt;0{other.x += sign(hspeed);}
 else{other.x+=choose(1,-1);}
 }
 if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
-x -= hspeed; y-=vspeed;
-vspeed =-8;
-//boop
-if other.arrows&gt;0 and arrows == 0{
-    other.arrows -= 1;
-    arrows += 1;
+    x -= hspeed; y-=vspeed;
+    vspeed =-8;
+    audio_play_sound(boop, 10, false);
+    //boop
+    if other.arrows&gt;0 and arrows == 0{
+        other.arrows -= 1;
+        arrows += 1;
     }
 }
 else{
-stun = 1;
-aiming = 0;
-if x&gt;other.x{hspeed = horzSpeed;}
-if x&lt;other.x{hspeed = -horzSpeed;}
+    if(team == 0 and other.team != team){
+        audio_play_sound(bump, 10, false);
+    } 
+    stun = 1;
+    aiming = 0;
+    if x&gt;other.x{hspeed = horzSpeed;}
+    if x&lt;other.x{hspeed = -horzSpeed;}
 }
-
-image_blend = c_black;
+if(other.team != team){
+    image_blend = c_black;
+}
 </string>
           </argument>
         </arguments>
@@ -317,6 +337,14 @@ my_blend = image_blend;
 
 team = 1;
 
+//sounds
+boop = boop2;
+death = death2;
+fire = fire2;
+jump = jump2;
+pickup = pickup2;
+step = step2;
+
 key_left = ord('A');
 key_right = ord('D');
 key_up = ord('W');
@@ -330,6 +358,14 @@ image_blend = c_aqua;
 my_blend = image_blend;
 
 team = 0;
+
+//sounds
+boop = boop1;
+death = death1;
+fire = fire1;
+jump = jump1;
+pickup = pickup1;
+step = step1;
 
 key_left = vk_left;
 key_right = vk_right;
