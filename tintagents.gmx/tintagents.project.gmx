@@ -25,6 +25,8 @@
     <sprite>sprites\sprArrow</sprite>
     <sprite>sprites\sPlayerspawn</sprite>
     <sprite>sprites\sAmmospawn</sprite>
+    <sprite>sprites\sBluePlayer</sprite>
+    <sprite>sprites\sYellPlayer</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
