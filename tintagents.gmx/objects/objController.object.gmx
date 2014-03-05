@@ -60,7 +60,7 @@ RandomRoomScript(room);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if instance_number(objPlayer)&lt;2{
+            <string>if CheckTeamAlive() != -1{
 restart += 1;
 }
 
@@ -94,12 +94,14 @@ if replayed and (GetAButtonPressed(0) or GetAButtonPressed(1) or keyboard_check_
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if room!=titleScreen{
+            <string>GamePadRefresh();
+
+if room!=titleScreen{
 var spawnlist = ds_list_create();
 with(objSpawnpoint){ds_list_add(spawnlist,id);}
 
 var p = 0,i,s,pp;
-repeat(2){
+repeat(GetNumberPlayers()){
 i = floor(random(ds_list_size(spawnlist)));
 s = ds_list_find_value(spawnlist,i);
 ds_list_delete(spawnlist,i);
@@ -163,16 +165,23 @@ else{draw_set_color(c_yellow);}
 draw_set_font(ftWinner);
 draw_set_halign(fa_center); draw_set_valign(fa_middle);
 
-if instance_number(objPlayer)==0{
-draw_text(room_width/2,room_height/2,"EVERYONE#DIED");
+var teamAlive = CheckTeamAlive();
+
+if teamAlive==-2{
+    draw_text(room_width/2,room_height/2,"EVERYONE#DIED");
 }
 else{
-if instance_number(objPlayer)==1{
-var p;
-with(objPlayer){p = player;}
-if p{draw_text(room_width/2,room_height/2,"AGENT BLUE#WINS");}
-else{draw_text(room_width/2,room_height/2,"AGENT RED#WINS");}
-}
+    if(teamAlive == 0){
+        draw_text(room_width/2,room_height/2,"AGENT BLUE#WINS")
+    } else if(teamAlive == 1){
+        draw_text(room_width/2,room_height/2,"AGENT RED#WINS")
+    }
+//if teamAlive!=1{
+//var p;
+//with(objPlayer){p = player;}
+//if p{draw_text(room_width/2,room_height/2,"AGENT BLUE#WINS");}
+//else{draw_text(room_width/2,room_height/2,"AGENT RED#WINS");}
+//}
 }
 </string>
           </argument>

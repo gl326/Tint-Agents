@@ -40,6 +40,8 @@ accel = 6; //speed / accel is what ets added per frame
 
 angle = 0;
 
+team = 0;
+
 my_blend = c_white;
 
 player = 0;
@@ -176,7 +178,6 @@ gravity = gravityStr*(2+(max(0,analogY)));
 }
 
 image_blend = merge_color(my_blend,image_blend,stun);
-if instance_number(objPlayer)&lt;=1{image_blend = c_black;}
 
 if stun&gt;0{stun -= (1/(room_speed/2));}
 else{stun = 0;}
@@ -310,9 +311,11 @@ image_blend = c_black;
             <kind>1</kind>
             <string>///init
 
-if player{
+if (player % 2 == 1){
 image_blend = c_yellow;
 my_blend = image_blend;
+
+team = 1;
 
 key_left = ord('A');
 key_right = ord('D');
@@ -325,6 +328,8 @@ key_shoot = ord('C');
 else{
 image_blend = c_aqua;
 my_blend = image_blend;
+
+team = 0;
 
 key_left = vk_left;
 key_right = vk_right;
