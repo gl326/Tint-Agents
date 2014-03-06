@@ -34,12 +34,12 @@ key_jump = vk_shift;
 key_shoot = vk_control;
 
 //sounds
-boop = boop1;
+/*boop = boop1;
 death = death1;
 fire = fire1;
 jump = jump1;
 pickup = pickup1;
-step = step1;
+step = step1;*/
 
 horzSpeed = 8;
 jumpSpeed = 12;
@@ -64,6 +64,8 @@ facing = 0;
 aim_dir = 0;
 
 step = 0;
+
+image_speed = 0;
 </string>
           </argument>
         </arguments>
@@ -110,11 +112,12 @@ gamepad_set_vibration(player,0,0)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>var analog = false;
+            <string>if(!dead){
+var analog = false;
 var analogX = 0, analogY = 0,
     jump = false,jumping = false,
     shoot = false;
-if(!dead){
+
     if gamepad_is_connected(player){
         analog = GetAnalogStick(player);
         analogX = analog[0]; analogY = analog[1];
@@ -128,66 +131,38 @@ if(!dead){
         jumping = keyboard_check(key_jump);
         shoot = keyboard_check(key_shoot);
     }
-}
+
 if !aiming{hspeed += horzSpeed/accel*sqr(1-stun)*analogX;}
 
+var stepping = sign(-sin(step/(room_speed/8)*pi));
 if( stun &gt; 0 or analogX == 0 or aiming){
     hspeed += (0 - hspeed)*.2;
     if abs(hspeed)&lt;.1{hspeed = 0; step = 0;}
 }
 else{step += 1;}
+if stepping&gt;=0 and sign(-sin(step/(room_speed/8)*pi))=-1 and grounded{audio_play_sound(step_snd, 20, false);}
 hspeed = max(-horzSpeed,min(horzSpeed,hspeed));
 
-if(grounded and hspeed != 0 and !audio_is_playing(step)){
-    //audio_play_sound(step, 20, false);
-}
 
-if analogX&lt;0{facing = true;}
-if analogX&gt;0{facing = false;}
+if analogX&lt;0{facing = true; image_xscale = -1;}
+if analogX&gt;0{facing = false; image_xscale = 1;}
 angle += ((hspeed*2) - angle)*.8;
-
-if vspeed&gt;=0{ //standing or falling
-if place_meeting(x,y+1,objBlock){
-y = round(y-vspeed);
-while(!place_meeting(x,y+1,objBlock)){y+=1;}
-
-grounded = true;
-vspeed = 0;
-gravity = 0;
-
-if analogY&lt;-.8 and abs(hspeed)&lt;1{image_yscale += (.5-image_yscale)*.4;}
-else{image_yscale += (1-image_yscale)*.4;}
-}
-else{
-if grounded{
-grounded = false;
-gravity = gravityStr;
-}
-}
-}else{
-if place_meeting(x,y-1,objBlock){
-y = round(y-vspeed);
-while(!place_meeting(x,y-1,objBlock)){y-=1;}
-vspeed = 0;
-}
-}
-
-if place_meeting(x+sign(hspeed),y,objBlock){
-x = round(x-hspeed);
-while(!place_meeting(x+sign(hspeed),y,objBlock)){x+=sign(hspeed);}
-hspeed = 0;
-}
 
 if grounded and jump{ //keyboard_check_pressed(key_jump){
     vspeed = -jumpSpeed;
     gravity = gravityStr;
     grounded = false;
     aiming = false;
-    audio_play_sound(jump, 10, false);
+    audio_play_sound(jump_snd, 10, false);
 }
 
 if !grounded and !jumping{ //!keyboard_check(key_jump){
 gravity = gravityStr*(2+(max(0,analogY)));
+}
+
+if grounded{
+if analogY&lt;-.8 and abs(hspeed)&lt;1{image_yscale += (.5-image_yscale)*.4;}
+else{image_yscale += (1-image_yscale)*.4;}
 }
 
 image_blend = merge_color(my_blend,image_blend,stun);
@@ -208,7 +183,7 @@ if arrows&gt;0{
         if aiming{
             aiming = 0;
             arrows -=1;
-            audio_play_sound(fire, 10, false);
+            audio_play_sound(fire_snd, 10, false);
             var a = instance_create(x+lengthdir_x(8,aim_dir),y-16+lengthdir_y(16,aim_dir),objArrow);
             a.pickup = 0;
             a.direction = aim_dir;
@@ -216,6 +191,47 @@ if arrows&gt;0{
             with(a){event_perform(ev_other,ev_user0);}
         }
     }
+}
+}
+else{
+aiming = 0;
+angle += (0-angle)*.4;
+if hspeed&gt;0 or image_angle&lt;0{image_angle += (-90 - image_angle)*.4; }
+else{image_angle += (90 - image_angle)*.4; }
+}
+
+////////////even dead guys do collisions and ground checks
+
+///////vertical
+if vspeed&gt;=0{ //standing or falling
+if place_meeting(x,y+1,objBlock){
+y = round(y-vspeed);
+while(!place_meeting(x,y+1,objBlock)){y+=1;}
+
+grounded = true;
+vspeed = 0;
+gravity = 0;
+}
+else{
+if grounded{
+grounded = false;
+gravity = gravityStr;
+}
+}
+}else{
+if place_meeting(x,y+vspeed,objBlock){
+//y = round(y-vspeed);
+while(!place_meeting(x,y-1,objBlock)){y-=1;}
+vspeed = 0;
+}
+}
+
+////horizontal
+if place_meeting(x+hspeed,y,objBlock) and abs(hspeed)&gt;0{
+//x = round(x-hspeed);
+while(!place_meeting(x+sign(hspeed),y,objBlock)){x+=sign(hspeed);}
+hspeed = 0;
+//if dead{show_message("side collision");}
 }
 </string>
           </argument>
@@ -240,12 +256,17 @@ if arrows&gt;0{
           <argument>
             <kind>1</kind>
             <string>if other.flying and other.player!=player{//or check team instead player
+    if !dead{
     dead = true;
-    audio_play_sound(death, 10, false);
+    speed = other.speed;
+    direction = other.direction;
+    vspeed -= 4;
+    audio_play_sound(death_snd, 10, false);
     image_blend = c_black;
     my_blend = image_blend;
     gamepad_set_vibration(player,.9,.9);
     alarm[0] = room_speed / 2;
+    }
 /*if stun==0{
 stun = 1;
 if x&gt;other.x{hspeed = horzSpeed;}
@@ -255,9 +276,11 @@ image_blend = c_black;
 }*/
 }
 else{
+if !dead{
     arrows += 1;
-    audio_play_sound(pickup, 10, false);
+    audio_play_sound(pickup_snd, 10, false);
     with(other){instance_destroy();}
+    }
 }
 </string>
           </argument>
@@ -281,16 +304,15 @@ else{
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if x==other.x{
+            <string>if !other.dead and !dead{
+if x==other.x{
 if hspeed&gt;0{other.x += sign(hspeed);}
 else{other.x+=choose(1,-1);}
 }
 if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
     x -= hspeed; y-=vspeed;
     vspeed =-8;
-    audio_play_sound(boop, 10, false);
-    gamepad_set_vibration(player,.7,.7);
-    alarm[0] = room_speed / 8;
+    audio_play_sound(boop_snd, 10, false);
     //boop
     if other.arrows&gt;0 and arrows == 0{
         other.arrows -= 1;
@@ -299,9 +321,7 @@ if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
 }
 else{
     if(team == 0 and other.team != team){
-        audio_play_sound(bump, 10, false);
-        gamepad_set_vibration(player,.6,.6);
-        alarm[0] = room_speed / 8;
+        audio_play_sound(sndBump, 10, false);
     } 
     stun = 1;
     aiming = 0;
@@ -310,6 +330,7 @@ else{
 }
 if(other.team != team){
     image_blend = c_black;
+}
 }
 </string>
           </argument>
@@ -342,12 +363,12 @@ my_blend = image_blend;
 team = 1;
 
 //sounds
-boop = boop2;
-death = death2;
-fire = fire2;
-jump = jump2;
-pickup = pickup2;
-step = step2;
+boop_snd = sndBoop2;
+death_snd = sndDeath2;
+fire_snd = sndFire2;
+jump_snd = sndJump2;
+pickup_snd = sndPickup2;
+step_snd = sndStep2;
 
 key_left = ord('A');
 key_right = ord('D');
@@ -364,12 +385,12 @@ my_blend = image_blend;
 team = 0;
 
 //sounds
-boop = boop1;
-death = death1;
-fire = fire1;
-jump = jump1;
-pickup = pickup1;
-step = step1;
+boop_snd = sndBoop1;
+death_snd = sndDeath1;
+fire_snd = sndFire1;
+jump_snd = sndJump1;
+pickup_snd = sndPickup1;
+step_snd = sndStep1;
 
 key_left = vk_left;
 key_right = vk_right;

@@ -5,7 +5,7 @@ for(var i=0;i<array_length_1d(global.gp);i++){
         count++;
     }
 }
-if(count <4){
+if(count <3){
     return 2;
 }
 return 4;
