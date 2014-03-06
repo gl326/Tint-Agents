@@ -202,14 +202,6 @@ else{image_angle += (90 - image_angle)*.4; }
 
 ////////////even dead guys do collisions and ground checks
 
-////horizontal
-if place_meeting(x+hspeed,y,objBlock){
-//x = round(x-hspeed);
-while(!place_meeting(x+sign(hspeed),y,objBlock)){x+=sign(hspeed);}
-hspeed = 0;
-//if dead{show_message("side collision");}
-}
-
 ///////vertical
 if vspeed&gt;=0{ //standing or falling
 if place_meeting(x,y+1,objBlock){
@@ -232,6 +224,14 @@ if place_meeting(x,y+vspeed,objBlock){
 while(!place_meeting(x,y-1,objBlock)){y-=1;}
 vspeed = 0;
 }
+}
+
+////horizontal
+if place_meeting(x+hspeed,y,objBlock) and abs(hspeed)&gt;0{
+//x = round(x-hspeed);
+while(!place_meeting(x+sign(hspeed),y,objBlock)){x+=sign(hspeed);}
+hspeed = 0;
+//if dead{show_message("side collision");}
 }
 </string>
           </argument>
@@ -276,9 +276,11 @@ image_blend = c_black;
 }*/
 }
 else{
+if !dead{
     arrows += 1;
     audio_play_sound(pickup_snd, 10, false);
     with(other){instance_destroy();}
+    }
 }
 </string>
           </argument>

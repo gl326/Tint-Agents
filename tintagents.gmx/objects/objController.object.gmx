@@ -74,8 +74,9 @@ if objReplay.rewind &amp;&amp; objReplay.replayFrame==objReplay.length-1{
     RandomRoomScript(room);
     }
 else{
-    objReplay.rewind = 1;
+    if objReplay.rewind == 1{
     objReplay.replayFrame = objReplay.length-1;
+    }
 }
 }
 </string>
