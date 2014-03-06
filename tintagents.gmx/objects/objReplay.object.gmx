@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-99999</depth>
+  <depth>0</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -33,7 +33,7 @@
 buffer = ds_list_create();
 
 stutter = 1; //how many frames to save. 1 = every frame, 2 = ever other, 3 = once every 3, etc
-length = (room_speed*4) / stutter; //how long the replay will be
+length = (room_speed*3) / stutter; //how long the replay will be
 
 recording = 1;
 replay_frame = 0;
@@ -242,16 +242,18 @@ startFrame = length-1;
           <argument>
             <kind>1</kind>
             <string>if room!=initRoom and room!=titleScreen{
+draw_set_color(c_white);
+draw_rectangle(0,0,room_width,room_height,false);
+
 if recording{
 if surface_exists(view_surface_id[0]){draw_surface(view_surface_id[0],0,0);}
 }
 else{
-    if replayFrame&lt;length-1 and rewind&gt;=1{surface_save(ds_list_find_value(buffer,floor(replayFrame)),string(replayFrame)+".png");}
-    draw_surface(ds_list_find_value(buffer,floor(replayFrame)),0,0);
+    //if replayFrame&lt;length-1 and rewind&gt;=1{surface_save(ds_list_find_value(buffer,floor(replayFrame)),string(replayFrame)+".png");}
+    draw_surface(ds_list_find_value(buffer,min(length-1,floor(replayFrame))),0,0);
     
     if rewind&lt;1 and (current_time mod 500)&lt;250{
-        draw_set_color(c_red);
-        //draw_text(room_width/2,room_height/2,"let's watch#that again");
+        draw_sprite(sprRewind,0,x,y);
     }
 }
 }

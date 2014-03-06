@@ -70,7 +70,13 @@ if restart&gt;=restartTimer and !replayed{
 }
 
 if replayed and (GetAButtonPressed(0) or GetAButtonPressed(1) or keyboard_check_pressed(vk_anykey)){
+if objReplay.rewind &amp;&amp; objReplay.replayFrame==objReplay.length-1{
     RandomRoomScript(room);
+    }
+else{
+    objReplay.rewind = 1;
+    objReplay.replayFrame = objReplay.length-1;
+}
 }
 </string>
           </argument>
@@ -140,7 +146,7 @@ replayed = 0;
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -167,6 +173,7 @@ draw_set_halign(fa_center); draw_set_valign(fa_middle);
 
 var teamAlive = CheckTeamAlive();
 
+if (instance_exists(objReplay) &amp;&amp; objReplay.rewind ==1 &amp;&amp; objReplay.replayFrame = objReplay.length-1){
 if teamAlive==-2{
     draw_text(room_width/2,room_height/2,"EVERYONE#DIED");
 }
@@ -176,6 +183,7 @@ else{
     } else if(teamAlive == 1){
         draw_text(room_width/2,room_height/2,"AGENT RED#WINS")
     }
+}
 //if teamAlive!=1{
 //var p;
 //with(objPlayer){p = player;}
