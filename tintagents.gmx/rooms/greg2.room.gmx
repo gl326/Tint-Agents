@@ -520,6 +520,10 @@
     <instance objName="objSpawnpoint" x="48" y="336" name="inst_B7D090AD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objSpawnpoint" x="592" y="336" name="inst_1D3CCEEE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="objSpawnpoint" x="464" y="80" name="inst_99F922F9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objFlowerPot" x="512" y="432" name="inst_4D2A0306" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objFlowerPot" x="128" y="432" name="inst_8F404C7A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objFlowerPot" x="32" y="112" name="inst_B7494A7B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="objFlowerPot" x="608" y="112" name="inst_219994C4" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

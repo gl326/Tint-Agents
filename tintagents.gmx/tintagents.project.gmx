@@ -29,6 +29,8 @@
     <sprite>sprites\sYellPlayer</sprite>
     <sprite>sprites\sprRewind</sprite>
     <sprite>sprites\sprLeaf</sprite>
+    <sprite>sprites\sFlowerpot1</sprite>
+    <sprite>sprites\sFlowerpot2</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -57,6 +59,7 @@
     <object>objects\objAmmospawn</object>
     <object>objects\objArrow</object>
     <object>objects\objReplay</object>
+    <object>objects\objFlowerPot</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\initRoom</room>
@@ -65,6 +68,7 @@
     <room>rooms\greg1</room>
     <room>rooms\joe1</room>
     <room>rooms\titleScreen</room>
+    <room>rooms\joe2</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
