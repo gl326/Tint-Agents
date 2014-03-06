@@ -27,6 +27,9 @@
     <sprite>sprites\sAmmospawn</sprite>
     <sprite>sprites\sBluePlayer</sprite>
     <sprite>sprites\sYellPlayer</sprite>
+    <sprite>sprites\sFlowerpot1</sprite>
+    <sprite>sprites\sFlowerpot2</sprite>
+    <sprite>sprites\sprLeaf</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -55,6 +58,7 @@
     <object>objects\objAmmospawn</object>
     <object>objects\objArrow</object>
     <object>objects\objReplay</object>
+    <object>objects\objFlowerpot</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\initRoom</room>

@@ -289,6 +289,8 @@ if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
     x -= hspeed; y-=vspeed;
     vspeed =-8;
     audio_play_sound(boop, 10, false);
+    gamepad_set_vibration(player,.7,.7);
+    alarm[0] = room_speed / 8;
     //boop
     if other.arrows&gt;0 and arrows == 0{
         other.arrows -= 1;
@@ -298,6 +300,8 @@ if vspeed&gt;0 and y&lt;=other.y-(sprite_yoffset/16){
 else{
     if(team == 0 and other.team != team){
         audio_play_sound(bump, 10, false);
+        gamepad_set_vibration(player,.6,.6);
+        alarm[0] = room_speed / 8;
     } 
     stun = 1;
     aiming = 0;
