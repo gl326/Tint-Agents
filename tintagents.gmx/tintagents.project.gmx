@@ -69,6 +69,7 @@
     <room>rooms\joe1</room>
     <room>rooms\titleScreen</room>
     <room>rooms\joe2</room>
+    <room>rooms\joe3</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

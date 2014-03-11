@@ -32,6 +32,10 @@ part_emitter_region(global.particleSystem,emitter,x,x,y,y,ps_shape_ellipse,ps_di
 
 touched = false;
 frameCount = 0;
+
+if random(1) &lt; .5 {
+    image_index = 1;
+}
 </string>
           </argument>
         </arguments>
